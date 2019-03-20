@@ -81,7 +81,7 @@ def get_performers(perf_str):
             p_time = plist[-1].lstrip('(').rstrip(')')
             p_name = ' '.join(plist[0:-1]).title().strip()
         else:
-            p_time = None
+            p_time = '0'
             p_name = p.title().strip()
         performers.append((p_name, p_time))
 
@@ -95,21 +95,17 @@ def parseShows(html_data):
     # Begin SXSW content
     shows = soup.find(id='SXSW')
 
-    print(shows)
-    # save_data(os.path.join(wdir,'free_shows.txt'), show_data)
-
-    #  find date tags
 
     show_list = []
 
     for div in shows.findAll('div', attrs={'class': 'unofficial-date'}):
         day = div.string.strip()
-        print(day)
+        # print(day)
         club = div.find_next('h2', attrs={'class': 'clubs'})
 
         # While still clubs for that day
         while club and club.find_previous('div', attrs={'class': 'unofficial-date'}).string.strip() == day:
-            print(day)
+            # print(day)
             try:
                 if type(club.next) != bs4.element.NavigableString:
                     # if link, store it

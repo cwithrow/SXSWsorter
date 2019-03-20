@@ -4,6 +4,8 @@ import os
 import requests
 import json
 
+import pandas as pd
+
 from SXSorter import parse_data
 
 
@@ -50,13 +52,15 @@ def main():
         html_data = grab_data(music_url, os.path.join(wdir,'SXSWfreeData.txt'))
 
     # parse html show data and return a list of records with all performers separated out
-    performers_list = parse_data.parseShows(html_data)
+    all_performances = parse_data.parseShows(html_data)
 
     # save to json
-    save_json(os.path.join(wdir, output_file), performers_list)
+    save_json(os.path.join(wdir, output_file), all_performances)
 
     print('Show data extracted and sorted into performers in file %r' % output_file)
 
+    perf_df = pd.read_json(os.path.join(wdir, output_file), orient='record')
+    print(perf_df[perf_df['perf_name'] == 'Calliope Musicals'])
 
 
 if __name__ == '__main__':
