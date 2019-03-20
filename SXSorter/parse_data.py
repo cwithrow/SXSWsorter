@@ -145,7 +145,6 @@ def parseShows(html_data):
                     show = {'date': day, 'club': club_name, 'location': location, 'location_link': loc_link,
                             'show_time': show_time, 'ticket_info': ticket_info, 'ticket_link': ticket_link,
                             'show_name': show_name, 'perf_name': p[0], 'perf_time': p[1]}
-                    print(show)
                     show_list.append(show)
             try:
                 club = club.find_next('h2', attrs={'class': 'clubs'})
@@ -154,23 +153,5 @@ def parseShows(html_data):
                 print('No more clubs')
 
         return show_list
-
-
-            # for artist in
-            # addRecord(str_date, curr_day, shows_list)
-
-        #     if day.string == curr_day:
-        #
-        # else:
-        #     curr_day = day.string
-        #     print(
-
-        # if day.next.attrs['class'][0] == 'unofficial-date':
-        #     print(True)
-        # else:
-        #     print(False)
-
-
-# create
 
 
