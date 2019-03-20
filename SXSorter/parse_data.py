@@ -12,8 +12,6 @@ def addRecord(day,curr_day, records_list ):
     record = {}
 
 
-
-
 def fixDate(dom):
     return datetime.strptime('03-' + dom + '-2019', '%m-%d-%Y')
 
@@ -70,14 +68,13 @@ def get_performers(perf_str):
     for i, v in enumerate(perf_list):
 
         if '];' in v:
-            print(v)
             pair = v.split(';')
             perf_list.insert(i + 1, pair[1])
             new_v = ' '.join(pair[0].split()[0:-1])
             if '[' in new_v:
                 new_v = ' '.join(new_v.split()[0:-1])
             perf_list[i] = new_v
-    print(perf_list)
+
     for p in perf_list:
         plist = p.split()
         if ':' in plist[-1]:
@@ -94,10 +91,11 @@ def get_performers(perf_str):
 def parseShows(html_data):
     soup = BeautifulSoup(html_data, "html.parser")
 
+
     # Begin SXSW content
     shows = soup.find(id='SXSW')
 
-
+    print(shows)
     # save_data(os.path.join(wdir,'free_shows.txt'), show_data)
 
     #  find date tags
@@ -106,10 +104,12 @@ def parseShows(html_data):
 
     for div in shows.findAll('div', attrs={'class': 'unofficial-date'}):
         day = div.string.strip()
-        # print(day)
+        print(day)
         club = div.find_next('h2', attrs={'class': 'clubs'})
-        while club:
 
+        # While still clubs for that day
+        while club and club.find_previous('div', attrs={'class': 'unofficial-date'}).string.strip() == day:
+            print(day)
             try:
                 if type(club.next) != bs4.element.NavigableString:
                     # if link, store it
@@ -118,6 +118,8 @@ def parseShows(html_data):
                     loc_link = None
 
                 club_name, location, show_time = get_club(club.text.split('\xa0')[0].strip())
+
+
             except AttributeError:
                 print('Location error')
 
@@ -152,6 +154,6 @@ def parseShows(html_data):
             except AttributeError:
                 print('No more clubs')
 
-        return show_list
+    return show_list
 
 
