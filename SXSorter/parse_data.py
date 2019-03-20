@@ -56,16 +56,28 @@ def get_club(location):
 def get_performers(perf_str):
     perf_str = perf_str.lower().replace('&amp;', '&')
 
-    if ';' in perf_str:
+    if ';' in perf_str and '];' not in perf_str:
         perf_list = perf_str.split(';')
     else:
         perf_list = perf_str.split(',')
 
     if 'w/' in perf_list[0]:
         show_name, perf_list[0] = perf_list[0].split('w/')
+        show_name = show_name.title().strip()
     else:
         show_name = None
     performers = []
+    for i, v in enumerate(perf_list):
+
+        if '];' in v:
+            print(v)
+            pair = v.split(';')
+            perf_list.insert(i + 1, pair[1])
+            new_v = ' '.join(pair[0].split()[0:-1])
+            if '[' in new_v:
+                new_v = ' '.join(new_v.split()[0:-1])
+            perf_list[i] = new_v
+    print(perf_list)
     for p in perf_list:
         plist = p.split()
         if ':' in plist[-1]:
@@ -76,7 +88,7 @@ def get_performers(perf_str):
             p_name = p.title().strip()
         performers.append((p_name, p_time))
 
-    return show_name.title().strip(), performers
+    return show_name, performers
 
 
 def parseShows(html_data):
@@ -94,7 +106,7 @@ def parseShows(html_data):
 
     for div in shows.findAll('div', attrs={'class': 'unofficial-date'}):
         day = div.string.strip()
-        print(day)
+        # print(day)
         club = div.find_next('h2', attrs={'class': 'clubs'})
         while club:
 
