@@ -8,21 +8,25 @@ import string
 
 
 
-def addRecord(day,curr_day, records_list ):
-    record = {}
 
-
+# not used
 def fixDate(dom):
     return datetime.strptime('03-' + dom + '-2019', '%m-%d-%Y')
 
-
+# not used
 def addDay(day):
     date = day.string.strip().split()[2]
     date = fixDate(date)
     return date
 
 
+# @Todo figure out why 'space 24 twenty ' isn't being found in exception list
 def get_club(location):
+    '''
+       Extracts name of club, address and time of full show from location field, when available
+    :param location:
+    :return: name, addr, time
+    '''
     name = None
     addr = None
     time = 0
@@ -52,6 +56,12 @@ def get_club(location):
 
 
 def get_performers(perf_str):
+    '''
+    Extracts individual performances (performer and time if available) from string of multiple performances at club
+
+    :param perf_str:
+    :return: show name, list of performers
+    '''
     perf_str = perf_str.lower().replace('&amp;', '&')
 
     if ';' in perf_str and '];' not in perf_str:
@@ -89,12 +99,15 @@ def get_performers(perf_str):
 
 
 def parseShows(html_data):
+    '''
+    Navigates through the html data of shows, puts individual performances and bluc info into distinct records,
+    :param html_data:
+    :return: list of shows (each a  dictionary)
+    '''
     soup = BeautifulSoup(html_data, "html.parser")
-
 
     # Begin SXSW content
     shows = soup.find(id='SXSW')
-
 
     show_list = []
 
@@ -114,7 +127,6 @@ def parseShows(html_data):
                     loc_link = None
 
                 club_name, location, show_time = get_club(club.text.split('\xa0')[0].strip())
-
 
             except AttributeError:
                 print('Location error')
