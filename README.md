@@ -4,3 +4,5 @@ Scrapes a listing of unofficial SXSW shows from Austin Chronicle, such as [this 
 
 
 ![Search for Performer](https://www.dropbox.com/s/9p4b0xfs07by20u/Screen%20Shot%202019-03-21%20at%202.44.51%20PM.png?raw=1)
+
+More info in this [post](https://cwithrow.github.io/sxsw-free-show-sorter.html).
